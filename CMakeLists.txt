@@ -19,7 +19,7 @@ set( INSTALL_DES ./ CACHE PATH "Where to install to." )
 option( USE_STRICT_COMPILE_WARNINGS "Use strict compilation warnings in debug mode." ON )
 if( USE_STRICT_COMPILE_WARNINGS )
     if( CMAKE_COMPILER_IS_GNUCXX )
-        set( CMAKE_CXX_FLAGS_DEBUG "-Wall" )
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
         #set( CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -Werror" )
         #set( CMAKE_CXX_FLAGS_DEBUG "-pedantic -Wall -Wextra -Wwrite-strings -Winit-self -Wcast-align -Wcast-qual -Wpointer-arith -Wstrict-aliasing -Wformat=2 -Wmissing-declarations -Wmissing-include-dirs -Wuninitialized -Werror-implicit-function-declaration -Wfloat-equal -Wundef -Wstrict-overflow=5 -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code -Wno-unused-parameter" )
         # use to suppress unused stuff: -Wno-unused-parameter -Wno-unused-result
@@ -27,9 +27,9 @@ if( USE_STRICT_COMPILE_WARNINGS )
 endif()
 
 # Debug is default
-if( NOT CMAKE_BUILD_TYPE )
-    set( CMAKE_BUILD_TYPE "Debug" CACHE STRING "" FORCE ) #MinSizeRel
-endif()
+#if( NOT CMAKE_BUILD_TYPE )
+#    set( CMAKE_BUILD_TYPE "Debug" CACHE STRING "" FORCE ) #MinSizeRel
+#endif()
 message("CMAKE_BUILD_TYPE ::" ${CMAKE_BUILD_TYPE})
 
 add_definitions(

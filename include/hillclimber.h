@@ -4,6 +4,7 @@
 
 #include "hcinput.h"
 #include "hcoutput.h"
+#include "alpha.h"
 
 //typedef unsigned int uint;
 

@@ -17,11 +17,12 @@ public:
     Alpha(uint value);
     Alpha(double realValue);
 
-    static void init(bool isgray, double a, double b, double k);
+    static void init(bool isgray, double a, double b, unsigned int k);
 
- double fitness();
+    double fitness();
 
     uint value();
+    void setValue(uint value);
     double realValue();
 
     std::vector<Alpha*>* generateNeighbors(int count);
@@ -34,7 +35,7 @@ private:
     static bool   _isgray;
     static double _a;
     static double _b;
-    static double _k;
+    static unsigned int _k;
     static double _btrCoef;
     static double _rtbCoef;
 
