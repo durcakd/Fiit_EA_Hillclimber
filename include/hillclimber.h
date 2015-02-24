@@ -5,6 +5,8 @@
 #include "hcinput.h"
 #include "hcoutput.h"
 
+//typedef unsigned int uint;
+
 class HillClimber
 {
 
