@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 2.8)
 # --------------
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH} )
+
 
 # Install destinations
 set( CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/_install CACHE PATH "Installation Destination" FORCE)
@@ -20,6 +20,7 @@ option( USE_STRICT_COMPILE_WARNINGS "Use strict compilation warnings in debug mo
 if( USE_STRICT_COMPILE_WARNINGS )
     if( CMAKE_COMPILER_IS_GNUCXX )
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+        message("CMAKE_CXX_FLAGS: " ${CMAKE_CXX_FLAGS})
         #set( CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -Werror" )
         #set( CMAKE_CXX_FLAGS_DEBUG "-pedantic -Wall -Wextra -Wwrite-strings -Winit-self -Wcast-align -Wcast-qual -Wpointer-arith -Wstrict-aliasing -Wformat=2 -Wmissing-declarations -Wmissing-include-dirs -Wuninitialized -Werror-implicit-function-declaration -Wfloat-equal -Wundef -Wstrict-overflow=5 -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code -Wno-unused-parameter" )
         # use to suppress unused stuff: -Wno-unused-parameter -Wno-unused-result
@@ -83,8 +84,6 @@ target_link_libraries( ${PROJECT_NAME}
 # -------
 # Install
 # -------
-install(DIRECTORY scripts/ DESTINATION ${INSTALL_DES}/scripts COMPONENT Data)
-
 install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${INSTALL_DES}
         COMPONENT Runtime )

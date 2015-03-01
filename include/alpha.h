@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <QDebug>
+#include <bitset>
 
 const double C = 0.01;
 
@@ -24,6 +25,12 @@ public:
     uint value();
     void setValue(uint value);
     double realValue();
+    QString printBin();
+
+    uint negateBit(uint i);
+
+    bool checkSolution(double fitness);
+    bool checkSolution();
 
     std::vector<Alpha*>* generateNeighbors(int count);
 
@@ -36,9 +43,9 @@ private:
     static double _a;
     static double _b;
     static unsigned int _k;
-    static double _btrCoef;
-    static double _rtbCoef;
-
+    static unsigned int _pow2tokm1;
+    static double _mindiff;
+    static double _mindiffFitness;
 
     uint _value;
 
