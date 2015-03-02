@@ -12,7 +12,7 @@
 #include <QLayout>
 #include "hcinput.h"
 #include "hcoutput.h"
-//#include <QtCharts>
+#include "qcustomplot.h"
 
 const bool C_USEGRAY = false;
 const int C_TMAX = 100;
@@ -44,8 +44,7 @@ private:
     HCInput getParams();
 
     QPushButton *runBasicTestPB;
-
-    //QChartView *chartView;
+    QCustomPlot *plotView;
 
     QCheckBox *useGrayCB;
     QLineEdit *tmaxLE;

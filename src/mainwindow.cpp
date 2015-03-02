@@ -30,14 +30,15 @@ MainWindow::MainWindow(QWidget *parent)
     QHBoxLayout *mainLA = new QHBoxLayout();
 
     runBasicTestPB = new QPushButton(tr("run test"));
-
+    buttonLA->addLayout(paramLA);
     buttonLA->addWidget(runBasicTestPB);
 
-    //mainLA->addItem(paramLA);
+
+    plotView = new QCustomPlot();
+
+
     mainLA->addLayout(buttonLA);
-
-
-    mainLA->addLayout(paramLA);
+    mainLA->addWidget(plotView);
 
 
     QWidget *widget = new QWidget;
@@ -137,14 +138,14 @@ HCInput MainWindow::getParams() {
          testMaxLE->hasAcceptableInput()) {
 
         return HCInput(tmaxLE->text().toInt(),
-                cmaxLE->text().toInt(),
-                useGrayCB->isChecked(),
-                mutbitsLE->text().toInt(),
-                kLE->text().toInt(),
-                startLE->text().toDouble(),
-                aLE->text().toDouble(),
-                bLE->text().toDouble(),
-                testMaxLE->text().toInt());
+                       cmaxLE->text().toInt(),
+                       useGrayCB->isChecked(),
+                       mutbitsLE->text().toInt(),
+                       kLE->text().toInt(),
+                       startLE->text().toDouble(),
+                       aLE->text().toDouble(),
+                       bLE->text().toDouble(),
+                       testMaxLE->text().toInt());
 
     }
     qDebug() << "WARNING: not valid input parameter, who knows which one :)";
