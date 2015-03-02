@@ -46,18 +46,18 @@ HCOutput& HillClimber::optimaze(HCInput &in)
     int fitnessCount = 0;
 
     Alpha::init(false, in.a, in.b, in.k, in.mutbits);
-    qDebug() << "------------";
+    //qDebug() << "------------";
 
     Alpha alfa(in.start);
     Alpha finalAlfa( alfa.value());
     double finalFitness = finalAlfa.fitness();
 
-    qDebug() << "start optimize in alfa: " << alfa.toString();
+    //qDebug() << "start optimize in alfa: " << alfa.toString();
 
     for (int i=0; i < in.tmax; i++) {
 
-        qDebug();
-        qDebug() << "alfa:  " << alfa.toString();
+        //qDebug();
+        // qDebug() << "alfa:  " << alfa.toString();
 
         // generate neighborhood from alfa
         // std::vector<Alpha*> &neighbors = *(alfa.getNeighborsAll());
@@ -74,7 +74,7 @@ HCOutput& HillClimber::optimaze(HCInput &in)
                 bestNeighborFitness = itFitness;
             }
         }
-        qDebug() << "best:  " << bestNeighbor.toString();
+        //qDebug() << "best:  " << bestNeighbor.toString();
 
 
         //qDebug() << "solution: "<< bestNeighbor.checkSolution(bestNeighborFitness);
@@ -85,13 +85,13 @@ HCOutput& HillClimber::optimaze(HCInput &in)
         if( bestNeighborFitness < finalFitness ) {
             finalFitness = bestNeighborFitness;
             finalAlfa = bestNeighbor;
-            qDebug() << "final: " << finalAlfa.toString() << endl << "-------";
+            //qDebug() << "final: " << finalAlfa.toString() << endl << "-------";
 
 
             //qDebug() << "solution: "<< bestNeighbor.checkSolution(bestNeighborFitness);
             //qDebug() << "solution: "<< bestNeighbor.checkSolution();
             if(bestNeighbor.checkSolution()) {
-                qDebug() << "solution " << i;
+                //qDebug() << "solution " << i+1;
 
                 HCOutput out(true, finalAlfa, i+1, fitnessCount);
                 return out;
@@ -105,37 +105,3 @@ HCOutput& HillClimber::optimaze(HCInput &in)
     return out;
 }
 
-/*
-void test() {
-
-    //double pow2tokm1 = pow(2,8)-1;
-    double pow2tokm1 = Util::pow2tokm1(8);
-    double real, oreal = 0.0;
-    uint bin;
-    uint errc = 0;
-
-    for(uint u=0; u<256; u++ ) {
-
-    QString myStringOfBits( QString::number( value(), 2 ) );
-
-        real = Util::binToReal(a, b, pow2tokm1, u);
-        bin = Util::realToBin(a, b, pow2tokm1, real);
-
-        qDebug() << qSetRealNumberPrecision(8) <<" "<< bin-u <<"  "<< u <<"  "<< bin <<"         "<< real <<"     "<< real-oreal;
-        if(bin != u) {errc++;}
-        oreal = real;
-    }
-    qDebug() << "Error count= "<< errc;
-
-
-}*/
-/*
-void test2() {
-
-    for(uint u=0; u<256; u++ ) {
-       QString myStringOfBits( QString::number( Util::binaryToGray(u), 2 ) );
-        qDebug() << u << "   " << myStringOfBits;
-
-    }
-
-}*/

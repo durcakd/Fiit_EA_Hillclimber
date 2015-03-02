@@ -16,7 +16,8 @@ bool* Alpha::_randBitIndex = NULL;
 
 void Alpha::init(bool isgray, double a, double b, unsigned int k, unsigned int mutbits)
 {
-    srand (time(NULL));
+    //srand(clock());
+
     _isgray = isgray;
     _a = a;
     _b = b;
@@ -33,15 +34,15 @@ void Alpha::init(bool isgray, double a, double b, unsigned int k, unsigned int m
     }
     _randBitIndex = new bool[k];
 
-    qDebug() << "=======================";
-    qDebug() << "  isgray = " << _isgray;
-    qDebug() << "       a = " << _a;
-    qDebug() << "       b = " << _b;
-    qDebug() << "       k = " << _k;
-    qDebug() << " pow2km1 = " << _pow2tokm1;
-    qDebug() << "    diff = " <<  QString::number(_mindiff,'f',15);
-    qDebug() << " mindiff = " << QString::number(_mindiffFitness,'f',15);
-    qDebug() << "=======================";
+//    qDebug() << "=======================";
+//    qDebug() << "  isgray = " << _isgray;
+//    qDebug() << "       a = " << _a;
+//    qDebug() << "       b = " << _b;
+//    qDebug() << "       k = " << _k;
+//    qDebug() << " pow2km1 = " << _pow2tokm1;
+//    qDebug() << "    diff = " <<  QString::number(_mindiff,'f',15);
+//    qDebug() << " mindiff = " << QString::number(_mindiffFitness,'f',15);
+//    qDebug() << "=======================";
 
 }
 
