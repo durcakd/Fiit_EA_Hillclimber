@@ -46,7 +46,7 @@ add_definitions(
 ### Qt5
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5Widgets REQUIRED)
-
+find_package(Qt5PrintSupport REQUIRED)
 
 # ------------
 # Source files
