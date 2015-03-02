@@ -42,6 +42,14 @@ public:
         return num;
     }
 
+    static QString str(double real) {
+        return QString::number(real,'f',8);
+    }
+
+    static QString bits(unsigned int val, unsigned int k) {
+        return QString::number( val, 2).rightJustified(k, '0');
+    }
+
 };
 
 #endif

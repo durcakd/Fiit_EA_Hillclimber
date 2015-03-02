@@ -6,23 +6,32 @@ bool   Alpha::_isgray;
 double Alpha::_a;
 double Alpha::_b;
 unsigned int Alpha::_k;
+unsigned int Alpha::_mutbits;
 unsigned int Alpha::_pow2tokm1;
 double Alpha::_mindiff;
 double Alpha::_mindiffFitness;
+bool* Alpha::_randBitIndex = NULL;
 
-QString str2(double val) {
-    return QString::number(val,'f',8);
-}
 
-void Alpha::init(bool isgray, double a, double b, unsigned int k)
+
+void Alpha::init(bool isgray, double a, double b, unsigned int k, unsigned int mutbits)
 {
+    srand (time(NULL));
     _isgray = isgray;
     _a = a;
     _b = b;
     _k = k;
+    _mutbits = mutbits;
+
     _pow2tokm1 = Util::pow2tokm1(k);
     _mindiff = Util::minDiff(a, b, _pow2tokm1)/2;
     _mindiffFitness = _mindiff * _mindiff;
+
+
+    if (NULL != _randBitIndex) {
+        delete _randBitIndex;
+    }
+    _randBitIndex = new bool[k];
 
     qDebug() << "=======================";
     qDebug() << "  isgray = " << _isgray;
@@ -71,38 +80,64 @@ double Alpha::realValue() {
 }
 
 double Alpha::fitness() {
-//    const double x = realValue() + C;
-//    return x*x;
+    const double x = realValue() + C;
+    return x*x;
 
-    return (realValue()+C)*(realValue()+C);
+//    return (realValue()+C)*(realValue()+C);
 }
 
 
-std::vector<Alpha *>* Alpha::generateNeighbors(int count) {
+std::vector<Alpha *>* Alpha::getNeighborsAll() {
     std::vector<Alpha *>* neighbors  = new std::vector<Alpha *>();
     double real = realValue();
-    //qDebug() << "neighbors: " << value() << /*"   " << printBin() <<  */"    fitness=" << str2(fitness());
+    //qDebug() << "  orig " << toString();
 
-    for (int i=0; i<count; i++ ) {
-        Alpha* mut;
-
-        neighbors->push_back( mut = new Alpha(negateBit(i)));
-        //qDebug() << "           " << mut->value() << /*"   " << mut->printBin() <<*/  "    fitness=" << str2(mut->fitness());
-
+    for (int i=0; i<_k; i++ ) {
+        Alpha* mut = new Alpha(negateBit(i));
+        neighbors->push_back(mut);
+        //qDebug() << "     m " << mut->toString();
     }
-
     return neighbors;
+}
 
+std::vector<Alpha *>* Alpha::getNeighborsRandom(int count) {
+    std::vector<Alpha *>* neighbors  = new std::vector<Alpha *>();
+    //qDebug() << "  orig " << toString();
+
+    for (int nb=0; nb<count; nb++ ) {
+        clearRandArray();
+        uint mutatedValue = _value;
+        uint pos;
+        for (int i=0; i<_mutbits; i++ ){
+            // find random not mutated bit
+            do {
+                pos = rand()%_k;
+            } while (_randBitIndex[pos]);
+
+            _randBitIndex[pos] = true;   // true == mutaded
+            mutatedValue = negateBit(mutatedValue, pos);
+        }
+
+        Alpha* mut = new Alpha(mutatedValue);
+        neighbors->push_back(mut);
+        //qDebug() << "     m " << mut->toString();
+    }
+    return neighbors;
+}
+
+void Alpha::clearRandArray() {
+    for(int i=0; i<_k; i++) {
+        _randBitIndex[i] = false;
+    }
 }
 
 
 uint Alpha::negateBit(uint i) {
-    return _value ^ (1u << i) ;
+    return negateBit(_value, i);
 }
 
-
-QString Alpha::printBin() {
-    return QString::number( value(), 2 );
+uint Alpha::negateBit(uint value, uint i) {
+    return value ^ (1u << i) ;
 }
 
 bool Alpha::checkSolution(double fitness) {
@@ -114,8 +149,19 @@ bool Alpha::checkSolution(double fitness) {
 
 bool Alpha::checkSolution() {
     double real = realValue();
-    if( -C-_mindiff < real  &&  real < -C+_mindiff){
+    if( -C-_mindiff < real  &&  real < -C+_mindiff) {
+        //qDebug() << -C-_mindiff << " < " << real << " < " << -C+_mindiff;
         return true;
     }
     return false;
+}
+
+QString Alpha::toString() {
+    QString s =  QString::number(value()) \
+            + "\t " + Util::bits(value(), _k) \
+            + "\t real= " + Util::str(realValue()) \
+            + "\t fitness=" + Util::str(fitness());
+    return s;
+
+
 }
