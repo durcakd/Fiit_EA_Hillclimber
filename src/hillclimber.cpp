@@ -41,7 +41,7 @@ void HillClimber::valuesTable(HCInput &in)
 
 }
 
-HCOutput& HillClimber::optimaze(HCInput &in)
+HCOutput& HillClimber::optimaze(const HCInput &in)
 {
     int fitnessCount = 0;
 

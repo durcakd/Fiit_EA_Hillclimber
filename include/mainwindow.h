@@ -10,7 +10,9 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QLayout>
-
+#include "hcinput.h"
+#include "hcoutput.h"
+//#include <QtCharts>
 
 const bool C_USEGRAY = false;
 const int C_TMAX = 100;
@@ -39,10 +41,11 @@ public slots:
 private:
 
     QGridLayout *createParamLayout();
+    HCInput getParams();
 
     QPushButton *runBasicTestPB;
 
-
+    //QChartView *chartView;
 
     QCheckBox *useGrayCB;
     QLineEdit *tmaxLE;
@@ -53,7 +56,16 @@ private:
     QLineEdit *aLE;
     QLineEdit *bLE;
     QLineEdit *testMaxLE;
-
+    /*
+    tmaxLE
+    cmaxLE
+    mutbitsLE
+    kLE
+    startLE
+    aLE
+    bLE
+    testMaxLE
+    */
 };
 
 #endif // MAINWINDOW_H

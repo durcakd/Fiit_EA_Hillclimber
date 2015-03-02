@@ -14,6 +14,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QIntValidator>
+#include <QDoubleValidator>
 
 #include "statistictest.h"
 
@@ -27,7 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
     QVBoxLayout *buttonLA = new QVBoxLayout();
     QHBoxLayout *mainLA = new QHBoxLayout();
 
-    QPushButton *runBasicTestPB = new QPushButton(tr("run test"));
+    runBasicTestPB = new QPushButton(tr("run test"));
+
     buttonLA->addWidget(runBasicTestPB);
 
     //mainLA->addItem(paramLA);
@@ -48,9 +51,20 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::runBasicTest() {
     qDebug() << "SLOT run basic test";
+    //runBasicTestPB->setEnabled(false);
+    //startB->setText(tr("Running"));
+
     StatisticTest statisticTest;
-    statisticTest.simpleTest();
+    statisticTest.simpleTest(getParams());
+    //runBasicTestPB->setEnabled(true);
+
+
 }
+
+//void  SudokuDialog::threadDone(){
+//    runBasicTestPB->setEnabled( true );
+//    startB->setText(tr("Run test"));
+//}
 
 
 QGridLayout *MainWindow::createParamLayout() {
@@ -95,7 +109,44 @@ QGridLayout *MainWindow::createParamLayout() {
     paramLayout->addWidget( bLE,         7,1 );
     paramLayout->addWidget( testMaxLE,   8,1 );
 
+
+    QIntValidator *validatorInt     = new QIntValidator(1, 1000000, this);
+    QDoubleValidator *validatorDouble = new QDoubleValidator(-1000000.0, 1000000.1, 2);
+
+    tmaxLE->setValidator(validatorInt);
+    cmaxLE->setValidator(validatorInt);
+    mutbitsLE->setValidator(validatorInt);
+    kLE->setValidator(validatorInt);
+    startLE->setValidator(validatorDouble);
+    aLE->setValidator(validatorDouble);
+    bLE->setValidator(validatorDouble);
+    testMaxLE->setValidator(validatorInt);
+
+
     return paramLayout;
 }
 
+HCInput MainWindow::getParams() {
+    if ( tmaxLE->hasAcceptableInput() &&
+         cmaxLE->hasAcceptableInput() &&
+         mutbitsLE->hasAcceptableInput() &&
+         kLE->hasAcceptableInput() &&
+         startLE->hasAcceptableInput() &&
+         aLE->hasAcceptableInput() &&
+         bLE->hasAcceptableInput() &&
+         testMaxLE->hasAcceptableInput()) {
 
+        return HCInput(tmaxLE->text().toInt(),
+                cmaxLE->text().toInt(),
+                useGrayCB->isChecked(),
+                mutbitsLE->text().toInt(),
+                kLE->text().toInt(),
+                startLE->text().toDouble(),
+                aLE->text().toDouble(),
+                bLE->text().toDouble(),
+                testMaxLE->text().toInt());
+
+    }
+    qDebug() << "WARNING: not valid input parameter, who knows which one :)";
+    return HCInput();
+}

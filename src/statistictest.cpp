@@ -9,22 +9,13 @@ StatisticTest::StatisticTest()
 }
 
 
-void StatisticTest::simpleTest()
+void StatisticTest::simpleTest(const HCInput &in)
 {
     srand(time(NULL));
-    int testmax = 50;
-
-    int tmax = 100;
-    int cmax = 4;
-    int mutbits = 1;
-    bool useGray = true;
-    HCInput input(tmax, cmax, mutbits, useGray);
-
-
-    for (int i=0; i<testmax; i++) {
+    for (int i=0; i<in.testmax; i++) {
 
         HillClimber hillClimber;
-        HCOutput out = hillClimber.optimaze(input);
+        HCOutput out = hillClimber.optimaze(in);
         qDebug() << i << "\t" << out.isSolution \
                  << "\t" << out.fitnessCount \
                  << "\t" << out.tCount;

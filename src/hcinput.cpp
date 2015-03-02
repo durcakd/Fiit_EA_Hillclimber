@@ -8,7 +8,8 @@ HCInput::HCInput(uint tmax,
         uint k,
         double start,
         double a,
-        double b) {
+        double b,
+        int testmax) {
 
     this->tmax = tmax;
     this->cmax = cmax;
@@ -18,4 +19,5 @@ HCInput::HCInput(uint tmax,
     this->start = start;
     this->a = a;
     this->b = b;
+    this->testmax = testmax;
 }
