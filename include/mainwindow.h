@@ -37,14 +37,24 @@ public:
 public slots:
 
     void runBasicTest();
+    void plotBasic();
+    void plot1Run();
+    void plotMultiFitnes();
+    void plotMultiFitnessCalls();
 
 private:
 
     QGridLayout *createParamLayout();
     HCInput getParams();
 
+
+
+
     QPushButton *runBasicTestPB;
     QCustomPlot *plotView;
+    HCInput input;
+    HCOutput output;
+    bool tested;
 
     QCheckBox *useGrayCB;
     QLineEdit *tmaxLE;
@@ -55,6 +65,8 @@ private:
     QLineEdit *aLE;
     QLineEdit *bLE;
     QLineEdit *testMaxLE;
+    QCheckBox *sortCB;
+    QCheckBox *allNeighborsCB;
     /*
     tmaxLE
     cmaxLE

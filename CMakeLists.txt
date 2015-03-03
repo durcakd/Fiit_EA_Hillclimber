@@ -73,10 +73,16 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
 
 message("add_executable of ::" ${PROJECT_NAME})
 
+
+#add_library( libqcustomplot SHARED IMPORTED )
+#set_target_properties( libqcustomplot PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/res/libqcustomplot.so )
+
+
 add_executable( ${PROJECT_NAME}  ${INCL} ${SRC})
 
 target_link_libraries( ${PROJECT_NAME}
                         Qt5::Widgets
+#                        libqcustomplot
                         )
 
 

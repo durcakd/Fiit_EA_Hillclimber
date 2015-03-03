@@ -9,7 +9,9 @@ HCInput::HCInput(uint tmax,
         double start,
         double a,
         double b,
-        int testmax) {
+        int testmax,
+        bool allNeighbors,
+        bool fill1RunChart) {
 
     this->tmax = tmax;
     this->cmax = cmax;
@@ -20,4 +22,7 @@ HCInput::HCInput(uint tmax,
     this->a = a;
     this->b = b;
     this->testmax = testmax;
+    this->fill1RunChart = fill1RunChart;
+    this->allNeighbors = allNeighbors;
+    qDebug() << "constructor  " << this->allNeighbors;
 }

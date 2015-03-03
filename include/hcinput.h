@@ -14,7 +14,10 @@ public:
             uint k = 8,
             double start = 0.5,
             double a = -1.0,
-            double b = 1.0,int testmax = 100);
+            double b = 1.0,
+            int testmax = 100,
+            bool allNeighbors = false,
+            bool fill1RunChart = false);
 
 
     uint tmax;
@@ -26,6 +29,8 @@ public:
     double a;
     double b;
     int testmax;
-};
+    bool allNeighbors;
 
+    bool fill1RunChart;
+};
 #endif

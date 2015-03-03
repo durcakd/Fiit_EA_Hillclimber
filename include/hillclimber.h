@@ -14,7 +14,7 @@ class HillClimber
 public:
     HillClimber();
 
-    HCOutput &optimaze(const HCInput &in);
+    HCOutput optimaze(const HCInput &in);
     void valuesTable(HCInput &in);
 
 };

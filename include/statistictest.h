@@ -12,7 +12,7 @@ class StatisticTest
 public:
     StatisticTest();
 
-    void simpleTest(const HCInput &in);
+    HCOutput simpleTest(HCInput in);
 
 };
 

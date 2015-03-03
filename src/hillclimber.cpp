@@ -41,27 +41,48 @@ void HillClimber::valuesTable(HCInput &in)
 
 }
 
-HCOutput& HillClimber::optimaze(const HCInput &in)
+HCOutput HillClimber::optimaze(const HCInput &in)
 {
+    HCOutput out;
+    out.isSolution = false;
+    out.resultFitness = 1.0;
+    out.tCount = in.tmax;
+    out.fitnessCount = 0;
+
+    //vfinalAlphaF;
+    //vAlphaF;
+
+
     int fitnessCount = 0;
 
-    Alpha::init(false, in.a, in.b, in.k, in.mutbits);
+    Alpha::init(in.useGray, in.a, in.b, in.k, in.mutbits);
     //qDebug() << "------------";
 
     Alpha alfa(in.start);
     Alpha finalAlfa( alfa.value());
     double finalFitness = finalAlfa.fitness();
 
+    out.resultFitness = finalFitness;
+    if (in.fill1RunChart) {
+        out.vfinalAlphaF.append(finalFitness);
+        out.vAlphaF.append(finalFitness);
+    }
     //qDebug() << "start optimize in alfa: " << alfa.toString();
-
+    bool solution = false;
     for (int i=0; i < in.tmax; i++) {
-
+        solution = out.isSolution;
         //qDebug();
         // qDebug() << "alfa:  " << alfa.toString();
 
         // generate neighborhood from alfa
-        // std::vector<Alpha*> &neighbors = *(alfa.getNeighborsAll());
-        std::vector<Alpha*> &neighbors = *(alfa.getNeighborsRandom(in.cmax));
+
+        std::vector<Alpha*> *p_neighbors;
+        if(in.allNeighbors) {
+            p_neighbors = alfa.getNeighborsAll();
+        } else {
+            p_neighbors = alfa.getNeighborsRandom(in.cmax);
+        }
+        std::vector<Alpha*> &neighbors = *p_neighbors;
         std::vector<Alpha*>::const_iterator it = neighbors.begin();
         Alpha bestNeighbor( (*it)->value());
         double bestNeighborFitness = bestNeighbor.fitness();
@@ -77,31 +98,37 @@ HCOutput& HillClimber::optimaze(const HCInput &in)
         //qDebug() << "best:  " << bestNeighbor.toString();
 
 
-        //qDebug() << "solution: "<< bestNeighbor.checkSolution(bestNeighborFitness);
-        //qDebug() << "solution: "<< bestNeighbor.checkSolution();
-
-
-
         if( bestNeighborFitness < finalFitness ) {
             finalFitness = bestNeighborFitness;
             finalAlfa = bestNeighbor;
             //qDebug() << "final: " << finalAlfa.toString() << endl << "-------";
 
-
+            out.resultFitness = finalFitness;
             //qDebug() << "solution: "<< bestNeighbor.checkSolution(bestNeighborFitness);
             //qDebug() << "solution: "<< bestNeighbor.checkSolution();
             if(bestNeighbor.checkSolution()) {
                 //qDebug() << "solution " << i+1;
 
-                HCOutput out(true, finalAlfa, i+1, fitnessCount);
-                return out;
+                out.isSolution = true;
+
+                out.tCount = i+1;
+                out.fitnessCount = fitnessCount;
             }
         }
 
         alfa.setValue( bestNeighbor.value());
 
+        if (in.fill1RunChart && !solution) {
+            out.vfinalAlphaF.append(finalFitness);
+            out.vAlphaF.append(bestNeighborFitness);
+        }
     }
-    HCOutput out(false, finalAlfa, in.tmax, fitnessCount);
+
+
+    if (!out.isSolution) {
+        out.tCount = in.tmax;
+        out.fitnessCount = fitnessCount;
+    }
     return out;
 }
 

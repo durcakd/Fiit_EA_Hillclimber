@@ -2,20 +2,26 @@
 #define HCOUTPUT_H
 
 #include "alpha.h"
+#include <QVector>
 
 class HCOutput
 {
 
 public:
-    HCOutput(bool isSolution, Alpha &alpha,
-    //Alpha &result,
-    int tCount,
-    int fitnessCount);
+    HCOutput();
 
     bool isSolution;
-    Alpha result;
+    double resultFitness;
     int tCount;
     int fitnessCount;
+
+    double meanFitness;
+    int solutions;
+
+    QVector<double> vfinalAlphaF;
+    QVector<double> vAlphaF;
+    QVector<double> testFitness;
+    QVector<double> testFitnessCalls;
 
 };
 
