@@ -14,6 +14,7 @@ HCOutput StatisticTest::simpleTest(HCInput in)
     qDebug() << "all nei  " << in.allNeighbors;
     HCOutput outTest;
     outTest.meanFitness = 0.0;
+    outTest.meanFitnessCall = 0.0;
     outTest.solutions = 0;
 
     srand(time(NULL));
@@ -38,10 +39,11 @@ HCOutput StatisticTest::simpleTest(HCInput in)
         outTest.testFitness.append(out.resultFitness);
         outTest.testFitnessCalls.append(out.fitnessCount);
         outTest.meanFitness += out.resultFitness;
+        outTest.meanFitnessCall += out.fitnessCount;
         outTest.solutions += out.isSolution ? 1 : 0;
 
     }
-
+    outTest.meanFitnessCall /= in.testmax;
     outTest.meanFitness /= outTest.solutions;
     qDebug() << "all nei  " << in.allNeighbors;
     return outTest;

@@ -18,6 +18,7 @@
 #include <QDoubleValidator>
 #include <QVector>
 
+
 #include "statistictest.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -32,7 +33,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     runBasicTestPB = new QPushButton(tr("run test"));
     buttonLA->addLayout(paramLA);
+    buttonLA->addWidget(createFirstExclusiveGroup());
     buttonLA->addWidget(runBasicTestPB);
+    buttonLA->addWidget(&promtL1);
+    buttonLA->addWidget(&promtL2);
+    buttonLA->addWidget(&promtL3);
 
 
     plotView = new QCustomPlot();
@@ -49,6 +54,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     QObject::connect( runBasicTestPB, SIGNAL(clicked()),
                       this, SLOT(runBasicTest()));
+    QObject::connect( plot1RB, SIGNAL(clicked()),
+                      this, SLOT(resetPlot()));
+    QObject::connect( plot2RB, SIGNAL(clicked()),
+                      this, SLOT(resetPlot()));
+    QObject::connect( plot3RB, SIGNAL(clicked()),
+                      this, SLOT(resetPlot()));
 
     plotBasic();
     tested = false;
@@ -61,9 +72,11 @@ void MainWindow::runBasicTest() {
     input = getParams();
     output = statisticTest.simpleTest(input);
     tested = true;
-    //plot1Run();
-    //plotMultiFitnes();
-    plotMultiFitnessCalls();
+    resetPlot();
+
+    promtL1.setText("Success rate: "+QString::number(((double)output.solutions*100)/input.testmax)+"%");
+    promtL2.setText("Mean fitness: "+QString::number(output.meanFitness, 'f', 10));
+    promtL3.setText("Mean fitness call: "+QString::number(output.meanFitnessCall, 'f', 0));
 }
 
 
@@ -77,6 +90,9 @@ void MainWindow::plotBasic() {
     // create graph and assign data to it:
     plotView->addGraph();
     plotView->graph(0)->setData(x,y);
+    plotView->graph(0)->setPen(QPen(Qt::blue));
+    plotView->graph(0)->setBrush(QBrush(QColor(0, 0, 0, 0)));
+
     // give the axes some labels:
     plotView->xAxis->setLabel("x");
     plotView->yAxis->setLabel("y");
@@ -90,6 +106,7 @@ void MainWindow::plot1Run() {
     if (tested) {
         qDebug() << "SLOT plot1Run";
         plotView->raise();
+        plotView->repaint();
 
         int tmax = input.tmax+1;
         QVector<double> x(tmax);
@@ -106,10 +123,13 @@ void MainWindow::plot1Run() {
 
         plotView->xAxis->setLabel("x");
         plotView->yAxis->setLabel("y");
+        plotView->yAxis->setScaleType(QCPAxis::stLogarithmic);
 
         plotView->xAxis->setRange(0, tmax+2);
         plotView->yAxis->setRange(-0.1, 1.0);
         plotView->replot();
+        plotView->removeGraph(1);
+         plotView->removeGraph(0);
 
     }
 }
@@ -118,6 +138,7 @@ void MainWindow::plotMultiFitnes() {
     if (tested) {
         qDebug() << "SLOT plotMultiFitness";
         plotView->raise();
+        plotView->repaint();
 
         QVector<double> vfitness = output.testFitness;
         if(sortCB->isChecked()) {qSort(vfitness);}
@@ -128,6 +149,8 @@ void MainWindow::plotMultiFitnes() {
 
         plotView->addGraph();
         plotView->graph(0)->setData(x,vfitness);
+        plotView->graph(0)->setPen(QPen(Qt::blue));
+        plotView->graph(0)->setBrush(QBrush(QColor(0, 0, 0, 0)));
 
         plotView->xAxis->setLabel("x");
         plotView->yAxis->setLabel("y");
@@ -136,6 +159,7 @@ void MainWindow::plotMultiFitnes() {
         plotView->xAxis->setRange(0, tmax);
         plotView->yAxis->setRange(-0.000001, 0.015);
         plotView->replot();
+         plotView->removeGraph(0);
     }
 }
 
@@ -143,6 +167,7 @@ void MainWindow::plotMultiFitnessCalls() {
     if (tested) {
         qDebug() << "SLOT plot multi fitness calls";
         plotView->raise();
+        plotView->repaint();
 
         QVector<double> vfitness = output.testFitnessCalls;
         if(sortCB->isChecked()) {qSort(vfitness);}
@@ -153,18 +178,44 @@ void MainWindow::plotMultiFitnessCalls() {
 
         plotView->addGraph();
         plotView->graph(0)->setData(x,vfitness);
+        plotView->graph(0)->setPen(QPen(Qt::blue));
+        plotView->graph(0)->setBrush(QBrush(QColor(0, 0, 0, 0)));
 
         plotView->xAxis->setLabel("x");
         plotView->yAxis->setLabel("y");
+        plotView->yAxis->setScaleType(QCPAxis::stLinear);
 
         plotView->xAxis->setRange(0, tmax);
-        plotView->yAxis->setRange(-0.0, input.k*input.tmax);
+        plotView->yAxis->setRange(-0.0, input.k*input.tmax+10);
         plotView->replot();
+         plotView->removeGraph(0);
     }
 
 }
 
+QGroupBox *MainWindow::createFirstExclusiveGroup() {
+    QGroupBox *groupBox = new QGroupBox();
+    plot1RB = new QRadioButton(tr("Plot1"));
+    plot2RB = new QRadioButton(tr("Plot2"));
+    plot3RB = new QRadioButton(tr("Plot3"));
+    plot3RB->setChecked(true);
+    QVBoxLayout *vbox = new QVBoxLayout;
+    vbox->addWidget(plot1RB);
+    vbox->addWidget(plot2RB);
+    vbox->addWidget(plot3RB);
+    groupBox->setLayout(vbox);
+    return groupBox;
+}
 
+void MainWindow::resetPlot() {
+    if (plot1RB->isChecked()) {
+        plot1Run();
+    } else if (plot2RB->isChecked()) {
+        plotMultiFitnes();
+    } else if (plot3RB->isChecked()) {
+        plotMultiFitnessCalls();
+    }
+}
 
 QGridLayout *MainWindow::createParamLayout() {
     useGrayCB    = new QCheckBox();

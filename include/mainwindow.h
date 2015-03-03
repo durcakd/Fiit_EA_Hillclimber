@@ -13,6 +13,8 @@
 #include "hcinput.h"
 #include "hcoutput.h"
 #include "qcustomplot.h"
+#include <QRadioButton>
+#include <QGroupBox>
 
 const bool C_USEGRAY = false;
 const int C_TMAX = 100;
@@ -37,16 +39,18 @@ public:
 public slots:
 
     void runBasicTest();
-    void plotBasic();
-    void plot1Run();
-    void plotMultiFitnes();
-    void plotMultiFitnessCalls();
+    void resetPlot();
 
 private:
 
     QGridLayout *createParamLayout();
+    QGroupBox *createFirstExclusiveGroup();
     HCInput getParams();
 
+    void plotBasic();
+    void plot1Run();
+    void plotMultiFitnes();
+    void plotMultiFitnessCalls();
 
 
 
@@ -55,6 +59,9 @@ private:
     HCInput input;
     HCOutput output;
     bool tested;
+    QLabel promtL1;
+    QLabel promtL2;
+    QLabel promtL3;
 
     QCheckBox *useGrayCB;
     QLineEdit *tmaxLE;
@@ -67,6 +74,11 @@ private:
     QLineEdit *testMaxLE;
     QCheckBox *sortCB;
     QCheckBox *allNeighborsCB;
+
+    QRadioButton *plot1RB;
+    QRadioButton *plot2RB;
+    QRadioButton *plot3RB;
+
     /*
     tmaxLE
     cmaxLE

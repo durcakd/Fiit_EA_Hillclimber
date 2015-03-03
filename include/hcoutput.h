@@ -16,6 +16,7 @@ public:
     int fitnessCount;
 
     double meanFitness;
+    double meanFitnessCall;
     int solutions;
 
     QVector<double> vfinalAlphaF;

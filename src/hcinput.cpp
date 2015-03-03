@@ -24,5 +24,4 @@ HCInput::HCInput(uint tmax,
     this->testmax = testmax;
     this->fill1RunChart = fill1RunChart;
     this->allNeighbors = allNeighbors;
-    qDebug() << "constructor  " << this->allNeighbors;
 }
